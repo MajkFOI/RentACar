@@ -1,0 +1,15 @@
+diff a/RentACar/RentACar/DodajKorisnikaForma.cs b/RentACar/RentACar/DodajKorisnikaForma.cs	(rejected hunks)
+@@ -107,5 +107,13 @@
+                 e.Handled = true;
+             }
+         }
++
++        private void DodajKorisnikaForma_KeyDown(object sender, KeyEventArgs e)
++        {
++            if (e.KeyCode == Keys.F1)
++            {
++                Help.ShowHelp(this, @"..\..\..\..\chm\RentACar.chm");
++            }
++        }
+     }
+ }

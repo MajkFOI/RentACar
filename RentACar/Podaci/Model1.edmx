@@ -1,0 +1,575 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Automobil">
+          <Key>
+            <PropertyRef Name="id_automobil" />
+          </Key>
+          <Property Name="id_automobil" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_model" Type="int" Nullable="false" />
+          <Property Name="id_marka" Type="int" Nullable="false" />
+          <Property Name="id_status" Type="int" Nullable="false" />
+          <Property Name="id_lokacija" Type="int" Nullable="false" />
+          <Property Name="tablica" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="godiste" Type="int" Nullable="false" />
+          <Property Name="cijena_po_danu" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="slika" Type="image" Nullable="false" />
+          <Property Name="snaga" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Korisnik">
+          <Key>
+            <PropertyRef Name="id_korisnik" />
+          </Key>
+          <Property Name="id_korisnik" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_uloga" Type="int" Nullable="false" />
+          <Property Name="ime" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="prezime" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="oib" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="broj_vozacke" Type="varchar" MaxLength="50" />
+          <Property Name="korisnicko_ime" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="lozinka" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Lokacija">
+          <Key>
+            <PropertyRef Name="id_lokacija" />
+          </Key>
+          <Property Name="id_lokacija" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="lokacija" Type="varchar" MaxLength="40" />
+          <Property Name="adresa" Type="varchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Marka">
+          <Key>
+            <PropertyRef Name="id_marka" />
+          </Key>
+          <Property Name="id_marka" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="marka" Type="varchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Model">
+          <Key>
+            <PropertyRef Name="id_model" />
+          </Key>
+          <Property Name="id_model" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="model" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="id_marka" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Najam">
+          <Key>
+            <PropertyRef Name="id_najam" />
+          </Key>
+          <Property Name="id_najam" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_automobil" Type="int" Nullable="false" />
+          <Property Name="id_korisnik" Type="int" Nullable="false" />
+          <Property Name="datum_najma" Type="date" Nullable="false" />
+          <Property Name="datum_povrata" Type="date" Nullable="false" />
+          <Property Name="nastala_steta" Type="varchar" MaxLength="100" />
+          <Property Name="zavrsen" Type="bit" />
+          <Property Name="iznos_štete" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="id_status" />
+          </Key>
+          <Property Name="id_status" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Uloga">
+          <Key>
+            <PropertyRef Name="id_uloga" />
+          </Key>
+          <Property Name="id_uloga" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="uloga" Type="varchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_model_marka">
+          <End Role="Marka" Type="Self.Marka" Multiplicity="1" />
+          <End Role="Model" Type="Self.Model" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Marka">
+              <PropertyRef Name="id_marka" />
+            </Principal>
+            <Dependent Role="Model">
+              <PropertyRef Name="id_marka" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_najam_automobil">
+          <End Role="Automobil" Type="Self.Automobil" Multiplicity="1" />
+          <End Role="Najam" Type="Self.Najam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Automobil">
+              <PropertyRef Name="id_automobil" />
+            </Principal>
+            <Dependent Role="Najam">
+              <PropertyRef Name="id_automobil" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_najam_korisnik">
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1" />
+          <End Role="Najam" Type="Self.Najam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="id_korisnik" />
+            </Principal>
+            <Dependent Role="Najam">
+              <PropertyRef Name="id_korisnik" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vk_id_lokacija">
+          <End Role="Lokacija" Type="Self.Lokacija" Multiplicity="1" />
+          <End Role="Automobil" Type="Self.Automobil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lokacija">
+              <PropertyRef Name="id_lokacija" />
+            </Principal>
+            <Dependent Role="Automobil">
+              <PropertyRef Name="id_lokacija" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vk_id_marka">
+          <End Role="Marka" Type="Self.Marka" Multiplicity="1" />
+          <End Role="Automobil" Type="Self.Automobil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Marka">
+              <PropertyRef Name="id_marka" />
+            </Principal>
+            <Dependent Role="Automobil">
+              <PropertyRef Name="id_marka" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vk_id_model">
+          <End Role="Model" Type="Self.Model" Multiplicity="1" />
+          <End Role="Automobil" Type="Self.Automobil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Model">
+              <PropertyRef Name="id_model" />
+            </Principal>
+            <Dependent Role="Automobil">
+              <PropertyRef Name="id_model" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vk_id_status">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Automobil" Type="Self.Automobil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="id_status" />
+            </Principal>
+            <Dependent Role="Automobil">
+              <PropertyRef Name="id_status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vk_id_uloga">
+          <End Role="Uloga" Type="Self.Uloga" Multiplicity="1" />
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uloga">
+              <PropertyRef Name="id_uloga" />
+            </Principal>
+            <Dependent Role="Korisnik">
+              <PropertyRef Name="id_uloga" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBModelStoreContainer">
+          <EntitySet Name="Automobil" EntityType="Self.Automobil" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Korisnik" EntityType="Self.Korisnik" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lokacija" EntityType="Self.Lokacija" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Marka" EntityType="Self.Marka" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Model" EntityType="Self.Model" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Najam" EntityType="Self.Najam" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Uloga" EntityType="Self.Uloga" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_model_marka" Association="Self.FK_model_marka">
+            <End Role="Marka" EntitySet="Marka" />
+            <End Role="Model" EntitySet="Model" />
+          </AssociationSet>
+          <AssociationSet Name="FK_najam_automobil" Association="Self.FK_najam_automobil">
+            <End Role="Automobil" EntitySet="Automobil" />
+            <End Role="Najam" EntitySet="Najam" />
+          </AssociationSet>
+          <AssociationSet Name="FK_najam_korisnik" Association="Self.FK_najam_korisnik">
+            <End Role="Korisnik" EntitySet="Korisnik" />
+            <End Role="Najam" EntitySet="Najam" />
+          </AssociationSet>
+          <AssociationSet Name="vk_id_lokacija" Association="Self.vk_id_lokacija">
+            <End Role="Lokacija" EntitySet="Lokacija" />
+            <End Role="Automobil" EntitySet="Automobil" />
+          </AssociationSet>
+          <AssociationSet Name="vk_id_marka" Association="Self.vk_id_marka">
+            <End Role="Marka" EntitySet="Marka" />
+            <End Role="Automobil" EntitySet="Automobil" />
+          </AssociationSet>
+          <AssociationSet Name="vk_id_model" Association="Self.vk_id_model">
+            <End Role="Model" EntitySet="Model" />
+            <End Role="Automobil" EntitySet="Automobil" />
+          </AssociationSet>
+          <AssociationSet Name="vk_id_status" Association="Self.vk_id_status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Automobil" EntitySet="Automobil" />
+          </AssociationSet>
+          <AssociationSet Name="vk_id_uloga" Association="Self.vk_id_uloga">
+            <End Role="Uloga" EntitySet="Uloga" />
+            <End Role="Korisnik" EntitySet="Korisnik" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Marka">
+          <Key>
+            <PropertyRef Name="id_marka" />
+          </Key>
+          <Property Name="id_marka" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="marka1" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Automobils" Relationship="DBModel.vk_id_marka" FromRole="Marka" ToRole="Automobil" />
+          <NavigationProperty Name="Models" Relationship="DBModel.FK_model_marka" FromRole="Marka" ToRole="Model" />
+          </EntityType>
+        <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Markas" EntityType="Self.Marka" />
+          <EntitySet Name="Automobils" EntityType="DBModel.Automobil" />
+          <EntitySet Name="Korisniks" EntityType="DBModel.Korisnik" />
+          <EntitySet Name="Lokacijas" EntityType="DBModel.Lokacija" />
+          <EntitySet Name="Models" EntityType="DBModel.Model" />
+          <EntitySet Name="Najams" EntityType="DBModel.Najam" />
+          <EntitySet Name="Status" EntityType="DBModel.Status" />
+          <EntitySet Name="Ulogas" EntityType="DBModel.Uloga" />
+          <AssociationSet Name="FK_najam_automobil" Association="DBModel.FK_najam_automobil">
+            <End Role="Automobil" EntitySet="Automobils" />
+            <End Role="Najam" EntitySet="Najams" />
+          </AssociationSet>
+          <AssociationSet Name="vk_id_lokacija" Association="DBModel.vk_id_lokacija">
+            <End Role="Lokacija" EntitySet="Lokacijas" />
+            <End Role="Automobil" EntitySet="Automobils" />
+          </AssociationSet>
+          <AssociationSet Name="vk_id_marka" Association="DBModel.vk_id_marka">
+            <End Role="Marka" EntitySet="Markas" />
+            <End Role="Automobil" EntitySet="Automobils" />
+          </AssociationSet>
+          <AssociationSet Name="vk_id_model" Association="DBModel.vk_id_model">
+            <End Role="Model" EntitySet="Models" />
+            <End Role="Automobil" EntitySet="Automobils" />
+          </AssociationSet>
+          <AssociationSet Name="vk_id_status" Association="DBModel.vk_id_status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Automobil" EntitySet="Automobils" />
+          </AssociationSet>
+          <AssociationSet Name="FK_najam_korisnik" Association="DBModel.FK_najam_korisnik">
+            <End Role="Korisnik" EntitySet="Korisniks" />
+            <End Role="Najam" EntitySet="Najams" />
+          </AssociationSet>
+          <AssociationSet Name="vk_id_uloga" Association="DBModel.vk_id_uloga">
+            <End Role="Uloga" EntitySet="Ulogas" />
+            <End Role="Korisnik" EntitySet="Korisniks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_model_marka" Association="DBModel.FK_model_marka">
+            <End Role="Marka" EntitySet="Markas" />
+            <End Role="Model" EntitySet="Models" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Automobil">
+          <Key>
+            <PropertyRef Name="id_automobil" />
+          </Key>
+          <Property Name="id_automobil" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_model" Type="Int32" Nullable="false" />
+          <Property Name="id_marka" Type="Int32" Nullable="false" />
+          <Property Name="id_status" Type="Int32" Nullable="false" />
+          <Property Name="id_lokacija" Type="Int32" Nullable="false" />
+          <Property Name="tablica" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="godiste" Type="Int32" Nullable="false" />
+          <Property Name="cijena_po_danu" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="slika" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="snaga" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Najams" Relationship="DBModel.FK_najam_automobil" FromRole="Automobil" ToRole="Najam" />
+          <NavigationProperty Name="Lokacija" Relationship="DBModel.vk_id_lokacija" FromRole="Automobil" ToRole="Lokacija" />
+          <NavigationProperty Name="Marka" Relationship="DBModel.vk_id_marka" FromRole="Automobil" ToRole="Marka" />
+          <NavigationProperty Name="Model" Relationship="DBModel.vk_id_model" FromRole="Automobil" ToRole="Model" />
+          <NavigationProperty Name="Status" Relationship="DBModel.vk_id_status" FromRole="Automobil" ToRole="Status" />
+        </EntityType>
+        <EntityType Name="Korisnik">
+          <Key>
+            <PropertyRef Name="id_korisnik" />
+          </Key>
+          <Property Name="id_korisnik" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_uloga" Type="Int32" Nullable="false" />
+          <Property Name="ime" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="prezime" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="oib" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="broj_vozacke" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="korisnicko_ime" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="lozinka" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Najams" Relationship="DBModel.FK_najam_korisnik" FromRole="Korisnik" ToRole="Najam" />
+          <NavigationProperty Name="Uloga" Relationship="DBModel.vk_id_uloga" FromRole="Korisnik" ToRole="Uloga" />
+        </EntityType>
+        <EntityType Name="Lokacija">
+          <Key>
+            <PropertyRef Name="id_lokacija" />
+          </Key>
+          <Property Name="id_lokacija" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="lokacija1" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="adresa" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Automobils" Relationship="DBModel.vk_id_lokacija" FromRole="Lokacija" ToRole="Automobil" />
+        </EntityType>
+        <EntityType Name="Model">
+          <Key>
+            <PropertyRef Name="id_model" />
+          </Key>
+          <Property Name="id_model" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="model1" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="id_marka" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Automobils" Relationship="DBModel.vk_id_model" FromRole="Model" ToRole="Automobil" />
+          <NavigationProperty Name="Marka" Relationship="DBModel.FK_model_marka" FromRole="Model" ToRole="Marka" />
+        </EntityType>
+        <EntityType Name="Najam">
+          <Key>
+            <PropertyRef Name="id_najam" />
+          </Key>
+          <Property Name="id_najam" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_automobil" Type="Int32" Nullable="false" />
+          <Property Name="id_korisnik" Type="Int32" Nullable="false" />
+          <Property Name="datum_najma" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="datum_povrata" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="nastala_steta" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="zavrsen" Type="Boolean" />
+          <Property Name="iznos_štete" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="Automobil" Relationship="DBModel.FK_najam_automobil" FromRole="Najam" ToRole="Automobil" />
+          <NavigationProperty Name="Korisnik" Relationship="DBModel.FK_najam_korisnik" FromRole="Najam" ToRole="Korisnik" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="id_status" />
+          </Key>
+          <Property Name="id_status" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="status1" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Automobils" Relationship="DBModel.vk_id_status" FromRole="Status" ToRole="Automobil" />
+        </EntityType>
+        <EntityType Name="Uloga">
+          <Key>
+            <PropertyRef Name="id_uloga" />
+          </Key>
+          <Property Name="id_uloga" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="uloga1" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Korisniks" Relationship="DBModel.vk_id_uloga" FromRole="Uloga" ToRole="Korisnik" />
+        </EntityType>
+        <Association Name="FK_najam_automobil">
+          <End Type="DBModel.Automobil" Role="Automobil" Multiplicity="1" />
+          <End Type="DBModel.Najam" Role="Najam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Automobil">
+              <PropertyRef Name="id_automobil" />
+            </Principal>
+            <Dependent Role="Najam">
+              <PropertyRef Name="id_automobil" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vk_id_lokacija">
+          <End Type="DBModel.Lokacija" Role="Lokacija" Multiplicity="1" />
+          <End Type="DBModel.Automobil" Role="Automobil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lokacija">
+              <PropertyRef Name="id_lokacija" />
+            </Principal>
+            <Dependent Role="Automobil">
+              <PropertyRef Name="id_lokacija" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vk_id_marka">
+          <End Type="DBModel.Marka" Role="Marka" Multiplicity="1" />
+          <End Type="DBModel.Automobil" Role="Automobil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Marka">
+              <PropertyRef Name="id_marka" />
+            </Principal>
+            <Dependent Role="Automobil">
+              <PropertyRef Name="id_marka" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vk_id_model">
+          <End Type="DBModel.Model" Role="Model" Multiplicity="1" />
+          <End Type="DBModel.Automobil" Role="Automobil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Model">
+              <PropertyRef Name="id_model" />
+            </Principal>
+            <Dependent Role="Automobil">
+              <PropertyRef Name="id_model" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vk_id_status">
+          <End Type="DBModel.Status" Role="Status" Multiplicity="1" />
+          <End Type="DBModel.Automobil" Role="Automobil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="id_status" />
+            </Principal>
+            <Dependent Role="Automobil">
+              <PropertyRef Name="id_status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_najam_korisnik">
+          <End Type="DBModel.Korisnik" Role="Korisnik" Multiplicity="1" />
+          <End Type="DBModel.Najam" Role="Najam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="id_korisnik" />
+            </Principal>
+            <Dependent Role="Najam">
+              <PropertyRef Name="id_korisnik" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vk_id_uloga">
+          <End Type="DBModel.Uloga" Role="Uloga" Multiplicity="1" />
+          <End Type="DBModel.Korisnik" Role="Korisnik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uloga">
+              <PropertyRef Name="id_uloga" />
+            </Principal>
+            <Dependent Role="Korisnik">
+              <PropertyRef Name="id_uloga" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_model_marka">
+          <End Type="DBModel.Marka" Role="Marka" Multiplicity="1" />
+          <End Type="DBModel.Model" Role="Model" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Marka">
+              <PropertyRef Name="id_marka" />
+            </Principal>
+            <Dependent Role="Model">
+              <PropertyRef Name="id_marka" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBModelStoreContainer" CdmEntityContainer="DBEntities">
+          <EntitySetMapping Name="Markas">
+            <EntityTypeMapping TypeName="DBModel.Marka">
+              <MappingFragment StoreEntitySet="Marka">
+                <ScalarProperty Name="id_marka" ColumnName="id_marka" />
+                <ScalarProperty Name="marka1" ColumnName="marka" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Automobils">
+            <EntityTypeMapping TypeName="DBModel.Automobil">
+              <MappingFragment StoreEntitySet="Automobil">
+                <ScalarProperty Name="snaga" ColumnName="snaga" />
+                <ScalarProperty Name="slika" ColumnName="slika" />
+                <ScalarProperty Name="cijena_po_danu" ColumnName="cijena_po_danu" />
+                <ScalarProperty Name="godiste" ColumnName="godiste" />
+                <ScalarProperty Name="tablica" ColumnName="tablica" />
+                <ScalarProperty Name="id_lokacija" ColumnName="id_lokacija" />
+                <ScalarProperty Name="id_status" ColumnName="id_status" />
+                <ScalarProperty Name="id_marka" ColumnName="id_marka" />
+                <ScalarProperty Name="id_model" ColumnName="id_model" />
+                <ScalarProperty Name="id_automobil" ColumnName="id_automobil" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Korisniks">
+            <EntityTypeMapping TypeName="DBModel.Korisnik">
+              <MappingFragment StoreEntitySet="Korisnik">
+                <ScalarProperty Name="lozinka" ColumnName="lozinka" />
+                <ScalarProperty Name="korisnicko_ime" ColumnName="korisnicko_ime" />
+                <ScalarProperty Name="broj_vozacke" ColumnName="broj_vozacke" />
+                <ScalarProperty Name="oib" ColumnName="oib" />
+                <ScalarProperty Name="prezime" ColumnName="prezime" />
+                <ScalarProperty Name="ime" ColumnName="ime" />
+                <ScalarProperty Name="id_uloga" ColumnName="id_uloga" />
+                <ScalarProperty Name="id_korisnik" ColumnName="id_korisnik" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lokacijas">
+            <EntityTypeMapping TypeName="DBModel.Lokacija">
+              <MappingFragment StoreEntitySet="Lokacija">
+                <ScalarProperty Name="adresa" ColumnName="adresa" />
+                <ScalarProperty Name="lokacija1" ColumnName="lokacija" />
+                <ScalarProperty Name="id_lokacija" ColumnName="id_lokacija" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Models">
+            <EntityTypeMapping TypeName="DBModel.Model">
+              <MappingFragment StoreEntitySet="Model">
+                <ScalarProperty Name="id_marka" ColumnName="id_marka" />
+                <ScalarProperty Name="model1" ColumnName="model" />
+                <ScalarProperty Name="id_model" ColumnName="id_model" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Najams">
+            <EntityTypeMapping TypeName="DBModel.Najam">
+              <MappingFragment StoreEntitySet="Najam">
+                <ScalarProperty Name="iznos_štete" ColumnName="iznos_štete" />
+                <ScalarProperty Name="zavrsen" ColumnName="zavrsen" />
+                <ScalarProperty Name="nastala_steta" ColumnName="nastala_steta" />
+                <ScalarProperty Name="datum_povrata" ColumnName="datum_povrata" />
+                <ScalarProperty Name="datum_najma" ColumnName="datum_najma" />
+                <ScalarProperty Name="id_korisnik" ColumnName="id_korisnik" />
+                <ScalarProperty Name="id_automobil" ColumnName="id_automobil" />
+                <ScalarProperty Name="id_najam" ColumnName="id_najam" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="DBModel.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="status1" ColumnName="status" />
+                <ScalarProperty Name="id_status" ColumnName="id_status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ulogas">
+            <EntityTypeMapping TypeName="DBModel.Uloga">
+              <MappingFragment StoreEntitySet="Uloga">
+                <ScalarProperty Name="uloga1" ColumnName="uloga" />
+                <ScalarProperty Name="id_uloga" ColumnName="id_uloga" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
